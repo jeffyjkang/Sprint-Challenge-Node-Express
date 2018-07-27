@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const projects = require("./data/routes/projects");
 const actions = require("./data/routes/actions");
@@ -10,6 +11,7 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 server.use(morgan("dev"));
+server.use(cors());
 
 server.get("/", (req, res) => {
   res.send("<h1>Hello<h1>");
