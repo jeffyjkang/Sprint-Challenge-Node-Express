@@ -55,16 +55,37 @@ router.delete("/:id", (req, res) => {
     .remove(id)
     .then(actions => {
       if (actions === 0) {
-        res
-          .status(404)
-          .json({
-            message: "The actions with the specified ID does not exist."
-          });
+        res.status(404).json({
+          message: "The actions with the specified ID does not exist."
+        });
       }
       res.status(200).json({ message: "action deleted" });
     })
     .catch(error => {
       res.status(500).json({ error: "The action could not be deleted." });
+    });
+});
+
+router.put("/:id", (req, res) => {
+  const id = req.params.id;
+  const { project_id, description, notes } = req.body;
+  if (!project_id || !description || !notes) {
+    res.status(400).json({ errorMessage: "Please provide name for post." });
+  }
+  actions
+    .update(id, { project_id, description, notes })
+    .then(action => {
+      if (!project_id || !description || !notes) {
+        res.status(404).json({
+          errorMessage: "The user with the specified ID does not exist."
+        });
+      }
+      res.status(200).json({ project_id, description, notes });
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The user information could not be modified." });
     });
 });
 
